@@ -1,47 +1,81 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@include('dashboard.layouts.login-header')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+<header>
+    <h1>Log In</h1>
+    <p>Welcome back, please enter details</p>
+</header>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+<form method="POST" action="{{ route('login') }}">
+    @csrf
+
+    <div class="form-field">
+        <label for="email">Email</label>
+
+        <input
+            type="email"
+            name="email"
+            id="email"
+            value="{{ old('email') }}"
+            required
+            autofocus
+        >
+
+        <div id="invalid-user" class="error" aria-live="polite">
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
+    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    <div class="form-field">
+        <label for="password">Password</label>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+        <input
+            type="password"
+            name="password"
+            id="password"
+            required
+            autocomplete="current-password"
+        >
 
+        <a href="{{ route('password.request') }}" class="forgot-pass">
+            Forgot Password?
+        </a>
+
+        <div id="invalid-pass" class="error" aria-live="polite">
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
+    </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
+    <footer>
+        <button type="submit" class="footer-log-in-btn">
+            Log In
+        </button>
+
+        <div class="no-account">
+            <p>Don't have an account?</p>
+
+            <a href="{{ route('register') }}">
+                Register
+            </a>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+        <div class="continue-with">
+            Or Continue With
         </div>
-    </form>
-</x-guest-layout>
+
+        <div class="socials">
+            <a class="socials-img" href="#">
+                <img src="{{ asset('assets/dashboard/login/assets/Google.png') }}" alt="Google">
+            </a>
+
+            <a class="socials-img" href="#">
+                <img src="{{ asset('assets/dashboard/login/assets/Github.png') }}" alt="GitHub">
+            </a>
+
+            <a class="socials-img" href="#">
+                <img src="{{ asset('assets/dashboard/login/assets/Facebook.png') }}" alt="Facebook">
+            </a>
+        </div>
+    </footer>
+</form>
+
+@include('dashboard.layouts.login-footer')
